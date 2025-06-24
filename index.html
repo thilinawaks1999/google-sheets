@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PS Poles Tender Management System</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      .login-box {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        text-align: center;
+        min-width: 400px;
+      }
+
+      .login-box h2 {
+        color: #333;
+        margin-bottom: 30px;
+        font-size: 28px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #555;
+        font-weight: 600;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #e1e5e9;
+        border-radius: 10px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      .btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        margin: 5px;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .btn-secondary {
+        background: linear-gradient(135deg, #36d1dc 0%, #5b86e5 100%);
+      }
+
+      .btn-danger {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+      }
+
+      .btn-success {
+        background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+      }
+
+      .header {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 20px;
+        border-radius: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+      }
+
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .header h1 {
+        color: #333;
+        font-size: 24px;
+      }
+
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .nav-tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .tab-btn {
+        padding: 12px 25px;
+        background: rgba(255, 255, 255, 0.8);
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .tab-btn.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      .tab-content {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+
+      .stats-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 25px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .stats-card h3 {
+        font-size: 32px;
+        margin-bottom: 10px;
+      }
+
+      .stats-card p {
+        font-size: 16px;
+        opacity: 0.9;
+      }
+
+      .table-container {
+        overflow-x: auto;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      table {
+        width: 100%;
+        background: white;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 15px;
+        text-align: left;
+        border-bottom: 1px solid #e1e5e9;
+      }
+
+      th {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        font-weight: 600;
+      }
+
+      tr:hover {
+        background: rgba(102, 126, 234, 0.05);
+      }
+
+      .status-badge {
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      .status-on-track {
+        background: #d4edda;
+        color: #155724;
+      }
+
+      .status-at-risk {
+        background: #fff3cd;
+        color: #856404;
+      }
+
+      .status-delayed {
+        background: #f8d7da;
+        color: #721c24;
+      }
+
+      .status-completed {
+        background: #cce7ff;
+        color: #004085;
+      }
+
+      .search-box {
+        margin-bottom: 20px;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-content {
+        background: white;
+        margin: 5% auto;
+        padding: 30px;
+        border-radius: 15px;
+        width: 90%;
+        max-width: 600px;
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .close:hover {
+        color: #000;
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 20px;
+        background: #e1e5e9;
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 10px 0;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+        transition: width 0.3s ease;
+      }
+
+      .alert {
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        font-weight: 600;
+      }
+
+      .alert-success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      .alert-danger {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+
+      .print-section {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        margin: 20px 0;
+      }
+
+      @media print {
+        body * {
+          visibility: hidden;
+        }
+        .print-section,
+        .print-section * {
+          visibility: visible;
+        }
+        .print-section {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+        }
+      }
+
+      .penalty-warning {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        margin: 10px 0;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-container">
+      <div class="login-box">
+        <h2><i class="fas fa-industry"></i> PS Poles Tender Management</h2>
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" placeholder="Enter username" />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Enter password" />
+        </div>
+        <button class="btn" onclick="login()">
+          <i class="fas fa-sign-in-alt"></i> Login
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="hidden">
+      <div class="container">
+        <div class="header">
+          <div class="header-content">
+            <h1><i class="fas fa-industry"></i> Tender Management System</h1>
+            <div class="user-info">
+              <span id="currentUser">Welcome, User</span>
+              <button class="btn btn-danger" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-tabs">
+          <button class="tab-btn active" onclick="showTab('dashboard')">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+          </button>
+          <button class="tab-btn" onclick="showTab('tenders')">
+            <i class="fas fa-file-contract"></i> Tenders
+          </button>
+          <button class="tab-btn" onclick="showTab('manufacturing')">
+            <i class="fas fa-industry"></i> Manufacturing
+          </button>
+          <button class="tab-btn" onclick="showTab('reports')">
+            <i class="fas fa-chart-bar"></i> Reports
+          </button>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content">
+          <div class="dashboard-grid">
+            <div class="stats-card">
+              <h3 id="totalTenders">0</h3>
+              <p>Total Tenders</p>
+            </div>
+            <div class="stats-card">
+              <h3 id="activeTenders">0</h3>
+              <p>Active Tenders</p>
+            </div>
+            <div class="stats-card">
+              <h3 id="completedTenders">0</h3>
+              <p>Completed Tenders</p>
+            </div>
+            <div class="stats-card">
+              <h3 id="delayedTenders">0</h3>
+              <p>Delayed Tenders</p>
+            </div>
+          </div>
+
+          <h3>Recent Tenders Overview</h3>
+          <div class="table-container">
+            <table id="dashboardTable">
+              <thead>
+                <tr>
+                  <th>Tender Name</th>
+                  <th>Due Date</th>
+                  <th>Progress</th>
+                  <th>Status</th>
+                  <th>Penalty Risk</th>
+                </tr>
+              </thead>
+              <tbody id="dashboardTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tenders Tab -->
+        <div id="tenders" class="tab-content hidden">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 20px;
+            "
+          >
+            <h3>Tender Management</h3>
+            <button class="btn btn-success" onclick="openTenderModal()">
+              <i class="fas fa-plus"></i> Add New Tender
+            </button>
+          </div>
+
+          <div class="search-box">
+            <input
+              type="text"
+              id="tenderSearch"
+              placeholder="Search tenders..."
+              oninput="searchTenders()"
+              style="
+                width: 100%;
+                padding: 12px;
+                border-radius: 10px;
+                border: 2px solid #e1e5e9;
+              "
+            />
+          </div>
+
+          <div class="table-container">
+            <table id="tendersTable">
+              <thead>
+                <tr>
+                  <th>Tender Name</th>
+                  <th>Tender No</th>
+                  <th>Product</th>
+                  <th>Quantity</th>
+                  <th>Awarded Date</th>
+                  <th>Due Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tendersTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Manufacturing Tab -->
+        <div id="manufacturing" class="tab-content hidden">
+          <h3>Manufacturing Records</h3>
+          <div class="form-row" style="margin-bottom: 20px">
+            <div class="form-group">
+              <label for="manufacturingTender">Select Tender</label>
+              <select id="manufacturingTender">
+                <option value="">Select Tender</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="manufacturingLocation">Manufacturing Location</label>
+              <select id="manufacturingLocation">
+                <option value="">Select Location</option>
+                <option value="Location 1">Location 1</option>
+                <option value="Location 2">Location 2</option>
+                <option value="Location 3">Location 3</option>
+                <option value="Location 4">Location 4</option>
+                <option value="Location 5">Location 5</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row" style="margin-bottom: 20px">
+            <div class="form-group">
+              <label for="polesCompleted">Poles Completed Today</label>
+              <input type="number" id="polesCompleted" min="0" />
+            </div>
+            <div class="form-group">
+              <label for="manufacturingDate">Date</label>
+              <input type="date" id="manufacturingDate" />
+            </div>
+          </div>
+
+          <button class="btn btn-success" onclick="addManufacturingRecord()">
+            <i class="fas fa-plus"></i> Add Manufacturing Record
+          </button>
+
+          <div class="table-container" style="margin-top: 20px">
+            <table id="manufacturingTable">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Tender</th>
+                  <th>Location</th>
+                  <th>Poles Completed</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="manufacturingTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Reports Tab -->
+        <div id="reports" class="tab-content hidden">
+          <h3>Reports & Analytics</h3>
+          <div style="margin-bottom: 20px">
+            <button class="btn btn-secondary" onclick="generateReport()">
+              <i class="fas fa-file-pdf"></i> Generate PDF Report
+            </button>
+            <button class="btn btn-secondary" onclick="printReport()">
+              <i class="fas fa-print"></i> Print Report
+            </button>
+            <button class="btn btn-secondary" onclick="emailReminders()">
+              <i class="fas fa-envelope"></i> Send Email Reminders
+            </button>
+          </div>
+
+          <div id="reportContent" class="print-section">
+            <h2>Tender Status Summary Report</h2>
+            <p>Generated on: <span id="reportDate"></span></p>
+
+            <div id="reportStats" style="margin: 20px 0"></div>
+            <div id="reportTable"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tender Modal -->
+    <div id="tenderModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeTenderModal()">&times;</span>
+        <h2 id="modalTitle">Add New Tender</h2>
+
+        <form id="tenderForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="tenderName">Tender Name</label>
+              <input type="text" id="tenderName" required />
+            </div>
+            <div class="form-group">
+              <label for="tenderNo">Tender Number</label>
+              <input type="text" id="tenderNo" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="tenderQty">Quantity</label>
+              <input type="number" id="tenderQty" min="1" required />
+            </div>
+            <div class="form-group">
+              <label for="product">Product Type</label>
+              <select id="product" required>
+                <option value="">Select Product</option>
+                <option value="9M-500KG">9M-500KG</option>
+                <option value="11M-350KG">11M-350KG</option>
+                <option value="11M-500KG">11M-500KG</option>
+                <option value="11M-850KG">11M-850KG</option>
+                <option value="13M-500KG">13M-500KG</option>
+                <option value="13M-850KG">13M-850KG</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="awardedDate">Awarded Date</label>
+              <input type="date" id="awardedDate" required />
+            </div>
+            <div class="form-group">
+              <label for="dueDate">Due Date</label>
+              <input type="date" id="dueDate" required />
+            </div>
+          </div>
+
+          <div style="text-align: center; margin-top: 20px">
+            <button type="submit" class="btn btn-success">
+              <i class="fas fa-save"></i> Save Tender
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="closeTenderModal()"
+            >
+              <i class="fas fa-times"></i> Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      const SCRIPT_URL =
+        "https://script.google.com/macros/s/AKfycbxvHS4Kr7d6qAmtBdv5U8S-G7s5YTp3RPj23_an3BkWY9tQ0fhgNyUUjNunDCWPoXLn/exec";
+      // Global variables
+      let currentUser = "";
+      let tenders = [];
+      let manufacturingRecords = [];
+      let editingTenderId = null;
+
+      // User credentials (in real implementation, this would be server-side)
+      const users = {
+        admin: "admin123",
+        manager: "manager123",
+      };
+
+      // Initialize date input to today
+      document.getElementById("manufacturingDate").value = new Date()
+        .toISOString()
+        .split("T")[0];
+
+      // Login functionality
+      async function login() {
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        if (users[username] && users[username] === password) {
+          currentUser = username;
+          document.getElementById(
+            "currentUser"
+          ).textContent = `Welcome, ${username}`;
+          document.getElementById("loginScreen").classList.add("hidden");
+          document.getElementById("mainApp").classList.remove("hidden");
+
+          // Show loading indicator
+          showAlert("Loading data...", "success");
+          await loadData();
+          updateDashboard();
+        } else {
+          alert(
+            "Invalid credentials. Try:\nUsername: admin, Password: admin123\nor\nUsername: manager, Password: manager123"
+          );
+        }
+      }
+
+      function logout() {
+        currentUser = "";
+        document.getElementById("loginScreen").classList.remove("hidden");
+        document.getElementById("mainApp").classList.add("hidden");
+        document.getElementById("username").value = "";
+        document.getElementById("password").value = "";
+      }
+
+      // Tab functionality
+      function showTab(tabName) {
+        // Hide all tabs
+        const tabs = document.querySelectorAll(".tab-content");
+        tabs.forEach((tab) => tab.classList.add("hidden"));
+
+        // Remove active class from all buttons
+        const buttons = document.querySelectorAll(".tab-btn");
+        buttons.forEach((btn) => btn.classList.remove("active"));
+
+        // Show selected tab and activate button
+        document.getElementById(tabName).classList.remove("hidden");
+        event.target.classList.add("active");
+
+        if (tabName === "dashboard") {
+          updateDashboard();
+        } else if (tabName === "manufacturing") {
+          updateManufacturingTenderOptions();
+        } else if (tabName === "reports") {
+          generateReportContent();
+        }
+      }
+
+      // Tender management
+      function openTenderModal(tenderId = null) {
+        editingTenderId = tenderId;
+        const modal = document.getElementById("tenderModal");
+        const title = document.getElementById("modalTitle");
+
+        if (tenderId) {
+          title.textContent = "Edit Tender";
+          const tender = tenders.find((t) => t.id === tenderId);
+          if (tender) {
+            document.getElementById("tenderName").value = tender.name;
+            document.getElementById("tenderNo").value = tender.number;
+            document.getElementById("tenderQty").value = tender.quantity;
+            document.getElementById("product").value = tender.product;
+            document.getElementById("awardedDate").value = tender.awardedDate;
+            document.getElementById("dueDate").value = tender.dueDate;
+          }
+        } else {
+          title.textContent = "Add New Tender";
+          document.getElementById("tenderForm").reset();
+        }
+
+        modal.style.display = "block";
+      }
+
+      function closeTenderModal() {
+        document.getElementById("tenderModal").style.display = "none";
+        editingTenderId = null;
+      }
+
+      // Form submission
+      document
+        .getElementById("tenderForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const tenderData = {
+            id: editingTenderId || Date.now().toString(),
+            name: document.getElementById("tenderName").value,
+            number: document.getElementById("tenderNo").value,
+            quantity: parseInt(document.getElementById("tenderQty").value),
+            product: document.getElementById("product").value,
+            awardedDate: document.getElementById("awardedDate").value,
+            dueDate: document.getElementById("dueDate").value,
+            completed: 0,
+          };
+
+          if (editingTenderId) {
+            const index = tenders.findIndex((t) => t.id === editingTenderId);
+            tenders[index] = { ...tenders[index], ...tenderData };
+          } else {
+            tenders.push(tenderData);
+          }
+
+          await saveData(); // Make it async
+          updateTendersTable();
+          updateDashboard();
+          closeTenderModal();
+
+          showAlert("Tender saved successfully!", "success");
+        });
+
+      async function deleteTender(tenderId) {
+        if (confirm("Are you sure you want to delete this tender?")) {
+          tenders = tenders.filter((t) => t.id !== tenderId);
+          await saveData();
+          updateTendersTable();
+          updateDashboard();
+          showAlert("Tender deleted successfully!", "success");
+        }
+      }
+
+      // Manufacturing records
+      async function addManufacturingRecord() {
+        const tenderId = document.getElementById("manufacturingTender").value;
+        const location = document.getElementById("manufacturingLocation").value;
+        const polesCompleted = parseInt(
+          document.getElementById("polesCompleted").value
+        );
+        const date = document.getElementById("manufacturingDate").value;
+
+        if (!tenderId || !location || !polesCompleted || !date) {
+          showAlert("Please fill all fields!", "danger");
+          return;
+        }
+
+        const record = {
+          id: Date.now().toString(),
+          tenderId,
+          location,
+          polesCompleted,
+          date,
+        };
+
+        manufacturingRecords.push(record);
+
+        // Update tender completion
+        const tender = tenders.find((t) => t.id === tenderId);
+        if (tender) {
+          tender.completed = (tender.completed || 0) + polesCompleted;
+        }
+
+        await saveData(); // Make it async
+        updateManufacturingTable();
+        updateDashboard();
+
+        // Reset form
+        document.getElementById("polesCompleted").value = "";
+        document.getElementById("manufacturingDate").value = new Date()
+          .toISOString()
+          .split("T")[0];
+
+        showAlert("Manufacturing record added successfully!", "success");
+      }
+
+      async function deleteManufacturingRecord(recordId) {
+        if (confirm("Are you sure you want to delete this record?")) {
+          const record = manufacturingRecords.find((r) => r.id === recordId);
+          if (record) {
+            // Update tender completion
+            const tender = tenders.find((t) => t.id === record.tenderId);
+            if (tender) {
+              tender.completed =
+                (tender.completed || 0) - record.polesCompleted;
+            }
+          }
+
+          manufacturingRecords = manufacturingRecords.filter(
+            (r) => r.id !== recordId
+          );
+          await saveData();
+          updateManufacturingTable();
+          updateDashboard();
+          showAlert("Record deleted successfully!", "success");
+        }
+      }
+
+      // Update functions
+      function updateDashboard() {
+        const total = tenders.length;
+        const completed = tenders.filter(
+          (t) => getStatus(t) === "Completed"
+        ).length;
+        const delayed = tenders.filter(
+          (t) => getStatus(t) === "Delayed"
+        ).length;
+        const active = total - completed;
+
+        document.getElementById("totalTenders").textContent = total;
+        document.getElementById("activeTenders").textContent = active;
+        document.getElementById("completedTenders").textContent = completed;
+        document.getElementById("delayedTenders").textContent = delayed;
+
+        updateDashboardTable();
+      }
+
+      function updateDashboardTable() {
+        const tbody = document.getElementById("dashboardTableBody");
+        tbody.innerHTML = "";
+
+        tenders.slice(0, 10).forEach((tender) => {
+          const row = tbody.insertRow();
+          const status = getStatus(tender);
+          const progress = (
+            ((tender.completed || 0) / tender.quantity) *
+            100
+          ).toFixed(1);
+          const penalty = calculatePenalty(tender);
+
+          row.innerHTML = `
+                    <td>${tender.name}</td>
+                    <td>${formatDate(tender.dueDate)}</td>
+                    <td>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progress}%"></div>
+                        </div>
+                        ${progress}% (${tender.completed || 0}/${
+            tender.quantity
+          })
+                    </td>
+                    <td><span class="status-badge status-${status
+                      .toLowerCase()
+                      .replace(" ", "-")}">${status}</span></td>
+                    <td>${
+                      penalty > 0 ? `₹${penalty.toLocaleString()}` : "No Risk"
+                    }</td>
+                `;
+        });
+      }
+
+      function updateTendersTable() {
+        const tbody = document.getElementById("tendersTableBody");
+        tbody.innerHTML = "";
+
+        tenders.forEach((tender) => {
+          const row = tbody.insertRow();
+          const status = getStatus(tender);
+
+          row.innerHTML = `
+                    <td>${tender.name}</td>
+                    <td>${tender.number}</td>
+                    <td>${tender.product}</td>
+                    <td>${tender.completed || 0}/${tender.quantity}</td>
+                    <td>${formatDate(tender.awardedDate)}</td>
+                    <td>${formatDate(tender.dueDate)}</td>
+                    <td><span class="status-badge status-${status
+                      .toLowerCase()
+                      .replace(" ", "-")}">${status}</span></td>
+                    <td>
+                        <button class="btn" onclick="openTenderModal('${
+                          tender.id
+                        }')" style="padding: 5px 10px; margin: 2px;">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteTender('${
+                          tender.id
+                        }')" style="padding: 5px 10px; margin: 2px;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+        });
+      }
+
+      function updateManufacturingTable() {
+        const tbody = document.getElementById("manufacturingTableBody");
+        tbody.innerHTML = "";
+
+        manufacturingRecords.forEach((record) => {
+          const tender = tenders.find((t) => t.id === record.tenderId);
+          const row = tbody.insertRow();
+
+          row.innerHTML = `
+                    <td>${formatDate(record.date)}</td>
+                    <td>${tender ? tender.name : "Unknown"}</td>
+                    <td>${record.location}</td>
+                    <td>${record.polesCompleted}</td>
+                    <td>
+                        <button class="btn btn-danger" onclick="deleteManufacturingRecord('${
+                          record.id
+                        }')" style="padding: 5px 10px;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+        });
+      }
+
+      function updateManufacturingTenderOptions() {
+        const select = document.getElementById("manufacturingTender");
+        select.innerHTML = '<option value="">Select Tender</option>';
+
+        tenders
+          .filter((t) => getStatus(t) !== "Completed")
+          .forEach((tender) => {
+            const option = document.createElement("option");
+            option.value = tender.id;
+            option.textContent = `${tender.name} (${tender.completed || 0}/${
+              tender.quantity
+            })`;
+            select.appendChild(option);
+          });
+      }
+
+      // Utility functions
+      function getStatus(tender) {
+        const today = new Date();
+        const dueDate = new Date(tender.dueDate);
+        const progress = (tender.completed || 0) / tender.quantity;
+
+        if (progress >= 1) return "Completed";
+        if (today > dueDate) return "Delayed";
+
+        const daysRemaining = Math.ceil(
+          (dueDate - today) / (1000 * 60 * 60 * 24)
+        );
+        const expectedProgress = 1 - daysRemaining / getTotalDays(tender);
+
+        if (progress < expectedProgress * 0.8) return "At Risk";
+        return "On Track";
+      }
+
+      function getTotalDays(tender) {
+        const awarded = new Date(tender.awardedDate);
+        const due = new Date(tender.dueDate);
+        return Math.ceil((due - awarded) / (1000 * 60 * 60 * 24));
+      }
+
+      function calculatePenalty(tender) {
+        const today = new Date();
+        const dueDate = new Date(tender.dueDate);
+
+        if (today <= dueDate || getStatus(tender) === "Completed") return 0;
+
+        const delayedDays = Math.ceil(
+          (today - dueDate) / (1000 * 60 * 60 * 24)
+        );
+        const remainingQty = tender.quantity - (tender.completed || 0);
+
+        // Assuming ₹1000 per pole as base value for penalty calculation
+        const baseValue = remainingQty * 1000;
+        return Math.round(baseValue * 0.01 * delayedDays);
+      }
+
+      function formatDate(dateString) {
+        return new Date(dateString).toLocaleDateString("en-IN");
+      }
+
+      function searchTenders() {
+        const query = document
+          .getElementById("tenderSearch")
+          .value.toLowerCase();
+        const rows = document.querySelectorAll("#tendersTableBody tr");
+
+        rows.forEach((row) => {
+          const text = row.textContent.toLowerCase();
+          row.style.display = text.includes(query) ? "" : "none";
+        });
+      }
+
+      function showAlert(message, type) {
+        const alertDiv = document.createElement("div");
+        alertDiv.className = `alert alert-${type}`;
+        alertDiv.textContent = message;
+
+        const container = document.querySelector(".tab-content:not(.hidden)");
+        container.insertBefore(alertDiv, container.firstChild);
+
+        setTimeout(() => {
+          alertDiv.remove();
+        }, 3000);
+      }
+
+      // Reports functionality
+      function generateReportContent() {
+        document.getElementById("reportDate").textContent =
+          new Date().toLocaleDateString("en-IN");
+
+        const stats = {
+          total: tenders.length,
+          completed: tenders.filter((t) => getStatus(t) === "Completed").length,
+          delayed: tenders.filter((t) => getStatus(t) === "Delayed").length,
+          atRisk: tenders.filter((t) => getStatus(t) === "At Risk").length,
+          onTrack: tenders.filter((t) => getStatus(t) === "On Track").length,
+        };
+
+        document.getElementById("reportStats").innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; text-align: center;">
+                    <div><strong>Total:</strong> ${stats.total}</div>
+                    <div><strong>Completed:</strong> ${stats.completed}</div>
+                    <div><strong>On Track:</strong> ${stats.onTrack}</div>
+                    <div><strong>At Risk:</strong> ${stats.atRisk}</div>
+                    <div><strong>Delayed:</strong> ${stats.delayed}</div>
+                </div>
+            `;
+
+        let tableHTML = `
+                <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                    <thead>
+                        <tr style="background: #f8f9fa;">
+                            <th style="border: 1px solid #ddd; padding: 10px;">Tender Name</th>
+                            <th style="border: 1px solid #ddd; padding: 10px;">Due Date</th>
+                            <th style="border: 1px solid #ddd; padding: 10px;">Progress</th>
+                            <th style="border: 1px solid #ddd; padding: 10px;">Status</th>
+                            <th style="border: 1px solid #ddd; padding: 10px;">Penalty</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+        tenders.forEach((tender) => {
+          const status = getStatus(tender);
+          const progress = (
+            ((tender.completed || 0) / tender.quantity) *
+            100
+          ).toFixed(1);
+          const penalty = calculatePenalty(tender);
+
+          tableHTML += `
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 10px;">${
+                          tender.name
+                        }</td>
+                        <td style="border: 1px solid #ddd; padding: 10px;">${formatDate(
+                          tender.dueDate
+                        )}</td>
+                        <td style="border: 1px solid #ddd; padding: 10px;">${progress}% (${
+            tender.completed || 0
+          }/${tender.quantity})</td>
+                        <td style="border: 1px solid #ddd; padding: 10px;">${status}</td>
+                        <td style="border: 1px solid #ddd; padding: 10px;">${
+                          penalty > 0
+                            ? `₹${penalty.toLocaleString()}`
+                            : "No Penalty"
+                        }</td>
+                    </tr>
+                `;
+        });
+
+        tableHTML += "</tbody></table>";
+        document.getElementById("reportTable").innerHTML = tableHTML;
+      }
+
+      function printReport() {
+        window.print();
+      }
+
+      function generateReport() {
+        // Create a downloadable report
+        const reportContent = `
+TENDER STATUS SUMMARY REPORT
+Generated on: ${new Date().toLocaleDateString("en-IN")}
+
+SUMMARY STATISTICS:
+- Total Tenders: ${tenders.length}
+- Completed: ${tenders.filter((t) => getStatus(t) === "Completed").length}
+- On Track: ${tenders.filter((t) => getStatus(t) === "On Track").length}
+- At Risk: ${tenders.filter((t) => getStatus(t) === "At Risk").length}
+- Delayed: ${tenders.filter((t) => getStatus(t) === "Delayed").length}
+
+DETAILED TENDER STATUS:
+${tenders
+  .map((tender) => {
+    const status = getStatus(tender);
+    const progress = (
+      ((tender.completed || 0) / tender.quantity) *
+      100
+    ).toFixed(1);
+    const penalty = calculatePenalty(tender);
+
+    return `
+Tender: ${tender.name}
+Number: ${tender.number}
+Product: ${tender.product}
+Due Date: ${formatDate(tender.dueDate)}
+Progress: ${progress}% (${tender.completed || 0}/${tender.quantity})
+Status: ${status}
+Penalty: ${penalty > 0 ? `₹${penalty.toLocaleString()}` : "No Penalty"}
+---`;
+  })
+  .join("\n")}
+            `;
+
+        const blob = new Blob([reportContent], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `tender-report-${
+          new Date().toISOString().split("T")[0]
+        }.txt`;
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      function emailReminders() {
+        const delayedTenders = tenders.filter(
+          (t) => getStatus(t) === "Delayed"
+        );
+        const atRiskTenders = tenders.filter((t) => getStatus(t) === "At Risk");
+
+        if (delayedTenders.length === 0 && atRiskTenders.length === 0) {
+          showAlert("No tenders require immediate attention!", "success");
+          return;
+        }
+
+        let emailContent = `Subject: Tender Status Alert - Immediate Attention Required\n\n`;
+        emailContent += `Dear Team,\n\nThe following tenders require immediate attention:\n\n`;
+
+        if (delayedTenders.length > 0) {
+          emailContent += `DELAYED TENDERS (${delayedTenders.length}):\n`;
+          delayedTenders.forEach((tender) => {
+            const penalty = calculatePenalty(tender);
+            emailContent += `- ${tender.name} (Due: ${formatDate(
+              tender.dueDate
+            )}) - Penalty: ₹${penalty.toLocaleString()}\n`;
+          });
+          emailContent += `\n`;
+        }
+
+        if (atRiskTenders.length > 0) {
+          emailContent += `AT RISK TENDERS (${atRiskTenders.length}):\n`;
+          atRiskTenders.forEach((tender) => {
+            const progress = (
+              ((tender.completed || 0) / tender.quantity) *
+              100
+            ).toFixed(1);
+            emailContent += `- ${tender.name} (Due: ${formatDate(
+              tender.dueDate
+            )}) - Progress: ${progress}%\n`;
+          });
+        }
+
+        emailContent += `\nPlease take necessary action to avoid penalties.\n\nBest regards,\nTender Management System`;
+
+        // In a real implementation, this would send actual emails
+        // For now, we'll show the email content and copy to clipboard
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(emailContent);
+          showAlert(
+            "Email content copied to clipboard! Paste it in your email client.",
+            "success"
+          );
+        } else {
+          alert(emailContent);
+        }
+      }
+
+      async function saveData() {
+        try {
+          const payload = {
+            action: "save",
+            tenders: tenders, // your array/object
+            manufacturingRecords: manufacturingRecords, // your array/object
+          };
+          const response = await fetch(SCRIPT_URL, {
+            method: "POST",
+            headers: {
+              "Content-Type": "text/plain;charset=utf-8",
+            },
+            body: JSON.stringify(payload),
+          });
+
+          if (!response.ok) throw new Error("Save failed");
+          const result = await response.json();
+          if (result.status === "success") {
+            console.log("Data saved successfully");
+            // show success notification or other logic
+          } else {
+            throw new Error(result.error || "Server error");
+          }
+        } catch (error) {
+          console.error("Error saving data:", error);
+          showAlert("Error saving data. Please try again.", "danger");
+        }
+      }
+
+      async function loadData() {
+        try {
+          const response = await fetch(SCRIPT_URL + "?action=load");
+          const data = await response.json();
+
+          if (data.tenders) {
+            tenders = data.tenders;
+          }
+          if (data.manufacturingRecords) {
+            manufacturingRecords = data.manufacturingRecords;
+          }
+
+          updateTendersTable();
+          updateManufacturingTable();
+        } catch (error) {
+          console.error("Error loading data:", error);
+          showAlert("Error loading data. Using local data.", "danger");
+        }
+      }
+
+      // Initialize the application
+      document.addEventListener("DOMContentLoaded", function () {
+        // Set today's date as default for manufacturing date
+        document.getElementById("manufacturingDate").value = new Date()
+          .toISOString()
+          .split("T")[0];
+
+        // Handle Enter key for login
+        document
+          .getElementById("password")
+          .addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+              login();
+            }
+          });
+
+        // Close modal when clicking outside
+        window.onclick = function (event) {
+          const modal = document.getElementById("tenderModal");
+          if (event.target === modal) {
+            closeTenderModal();
+          }
+        };
+      });
+    </script>
+  </body>
+</html>
